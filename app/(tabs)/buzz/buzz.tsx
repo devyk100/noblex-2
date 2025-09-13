@@ -54,7 +54,6 @@ const CampusBuzz = () => {
     const renderCard = useCallback((image: ImageSourcePropType, index: number) => {
         return (
             <>
-
                 <SafeAreaView style={[styles.renderCardContainer, { backgroundColor: colorScheme === 'dark' ? '#000000ff' : '#ffffffff' }]}>
                     <Image
                         source={image}
@@ -140,7 +139,7 @@ const CampusBuzz = () => {
                 <BottomSheetModal
                     snapPoints={["20%", "90%"]}
                     handleIndicatorStyle={{ backgroundColor: colorScheme === 'dark' ? '#ffffffff' : '#000000ff' }}
-                    handleStyle={{ 
+                    handleStyle={{
                         backgroundColor: colorScheme === 'dark' ? '#524e4eff' : '#ffffffff',
                         borderTopEndRadius: 20,
                         borderTopStartRadius: 20
