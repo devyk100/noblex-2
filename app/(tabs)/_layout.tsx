@@ -24,9 +24,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="experientia"
         options={{
-          title: 'Explore',
+          title: 'Experientia',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
@@ -39,17 +39,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="temp_1"
+        name="networking"
         options={{
-          title: 'Campus Buzz1',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Networking',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.2" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="temp_2"
+        name="profile"
         options={{
-          title: 'Campus Buzz2',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Profile',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person" color={color} />,
         }}
       />
     </Tabs>

@@ -19,7 +19,10 @@ const MAPPING = {
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
   'megaphone': 'campaign',
-  'megaphone.fill': 'outlined-flag'
+  'megaphone.fill': 'outlined-flag',
+  'person.2': 'people-alt',
+  'person': 'account-box',
+  "rotate.left": "undo"
 } as IconMapping;
 
 /**

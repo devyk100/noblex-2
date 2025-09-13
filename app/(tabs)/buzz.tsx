@@ -1,11 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
 import { OverlayLabelBottom, OverlayLabelLeft, OverlayLabelRight, OverlayLabelTop } from '@/components/swiper-ui/overlay-label';
 import { ThemedText } from '@/components/themed-text';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { IconSymbol } from '@/components/ui/icon-symbol';
+import RoundButton from '@/components/ui/round-button';
+import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BlurView } from 'expo-blur';
 import React, { useCallback, useRef } from 'react';
 import {
     Dimensions,
     Image,
+    ScrollView,
     StyleSheet,
     Text,
     useColorScheme,
@@ -13,9 +17,9 @@ import {
     type ImageSourcePropType,
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Button, Snackbar } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Swiper, type SwiperCardRefType } from 'rn-swiper-list';
-
 const screenHeight = Dimensions.get('window').height;
 
 const IMAGES: ImageSourcePropType[] = [
@@ -33,10 +37,21 @@ const ICON_SIZE = 24;
 const CampusBuzz = () => {
     const ref = useRef<SwiperCardRefType>(null);
     const colorScheme = useColorScheme()
-    const bottomSheetRef = useRef<BottomSheet>(null);
+    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+    // callbacks
+    const handlePresentModalPress = useCallback(() => {
+        bottomSheetModalRef.current?.present();
+    }, []);
     const handleSheetChanges = useCallback((index: number) => {
         console.log('handleSheetChanges', index);
     }, []);
+
+    const [visible, setVisible] = React.useState(false);
+
+    const onToggleSnackBar = () => setVisible(!visible);
+    const onDismissSnackBar = () => setVisible(false);
+
     const renderCard = useCallback((image: ImageSourcePropType, index: number) => {
         return (
             <>
@@ -54,6 +69,16 @@ const CampusBuzz = () => {
                         <ThemedText type='default'>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste voluptate, debitis excepturi eos officiis odit cumque quibusdam labore doloremque ad!
                         </ThemedText>
+                        <Button
+                            mode="contained-tonal" // "text" | "outlined" | "contained"
+                            onPress={() => {
+                                handlePresentModalPress()
+                                onToggleSnackBar()
+                            }}
+                            style={{
+                                paddingHorizontal: 10
+                            }}
+                        >Know more</Button>
                     </View>
                 </SafeAreaView>
             </>
@@ -112,14 +137,67 @@ const CampusBuzz = () => {
                     }}
                 />
             </View>
-            <BottomSheet
-                ref={bottomSheetRef}
-                onChange={handleSheetChanges}
+            <BottomSheetModalProvider >
+                <BottomSheetModal
+                    snapPoints={["20%", "90%"]}
+                    handleIndicatorStyle={{ backgroundColor: colorScheme === 'dark' ? '#ffffffff' : '#000000ff' }}
+                    handleStyle={{
+                        backgroundColor: colorScheme === 'dark' ? '#524e4eff' : '#ffffffff',
+                        borderTopEndRadius: 20,
+                        borderTopStartRadius: 20
+                    }}
+                    ref={bottomSheetModalRef}
+                    backgroundStyle={{ backgroundColor: colorScheme === 'dark' ? '#1a1a1aff' : '#ffffffff' }}
+                    onChange={handleSheetChanges}
+                >
+                    <BlurView
+                        intensity={50} // Adjust 0–100
+                        tint={colorScheme === 'dark' ? 'dark' : 'light'} // auto theme
+                        style={{
+                            ...StyleSheet.absoluteFillObject, // Fill the modal background
+                            borderTopLeftRadius: 20,
+                            borderTopRightRadius: 20,
+                            overflow: 'hidden',
+                        }}
+                    />
+                    <BottomSheetView style={[styles.contentContainer, { backgroundColor: colorScheme === 'dark' ? '#232323ff' : '#ffffffff' }]}>
+                        <ScrollView style={{
+                            gap: 50
+                        }}>
+                            <ThemedText type='title'>
+                                Event Title
+                            </ThemedText>
+                            <ThemedText type='subtitle'>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, animi?
+                            </ThemedText>
+                            <ThemedText>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae aperiam est expedita maxime, quod dignissimos in quae nemo quia, obcaecati fugit numquam laudantium nesciunt quos sit quaerat accusamus dolores aliquam?
+                            </ThemedText>
+                        </ScrollView>
+                    </BottomSheetView>
+                </BottomSheetModal>
+            </BottomSheetModalProvider>
+            <RoundButton onPress={() => {
+                ref.current?.swipeBack();
+            }}>
+                <IconSymbol size={28} name="rotate.left" color={colorScheme!} />
+            </RoundButton>
+            {/* <Button mode="contained" onPress={onToggleSnackBar}>
+                Show Snackbar
+            </Button> */}
+            <Snackbar
+                visible={visible}
+                onDismiss={onDismissSnackBar}
+                action={{
+                    label: 'Undo',
+                    onPress: () => {
+                        console.log('Undo pressed');
+                    },
+                }}
+                duration={400} // optional: auto-dismiss after 3s
             >
-                <BottomSheetView style={styles.contentContainer}>
-                    <Text>Awesome 🎉</Text>
-                </BottomSheetView>
-            </BottomSheet>
+                Open the dock to see more details
+            </Snackbar>
         </GestureHandlerRootView>
 
     );
