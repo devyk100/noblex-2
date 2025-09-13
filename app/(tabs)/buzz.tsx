@@ -12,6 +12,7 @@ import {
     type ImageSourcePropType,
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Swiper, type SwiperCardRefType } from 'rn-swiper-list';
 
 
@@ -33,13 +34,13 @@ const CampusBuzz = () => {
     const colorScheme = useColorScheme()
     const renderCard = useCallback((image: ImageSourcePropType, index: number) => {
         return (
-            <View style={[styles.renderCardContainer, { backgroundColor: colorScheme === 'dark' ? '#000000ff' : '#ffffffff' }]}>
+            <SafeAreaView style={[styles.renderCardContainer, { backgroundColor: colorScheme === 'dark' ? '#000000ff' : '#ffffffff' }]}>
                 <Image
                     source={image}
                     style={styles.renderCardImage}
                     resizeMode="cover"
                 />
-                <View>
+                <View style={styles.renderCardTextContainer}>
                     <ThemedText type='title'>
                         Event Title
                     </ThemedText>
@@ -47,7 +48,7 @@ const CampusBuzz = () => {
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste voluptate, debitis excepturi eos officiis odit cumque quibusdam labore doloremque ad!
                     </ThemedText>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }, []);
     const renderFlippedCard = useCallback(
@@ -61,13 +62,14 @@ const CampusBuzz = () => {
         []
     );
 
-
     return (
         <GestureHandlerRootView style={styles.container}>
             <View style={styles.subContainer}>
                 <Swiper
                     ref={ref}
                     data={IMAGES}
+                    disableTopSwipe
+                    disableBottomSwipe
                     cardStyle={styles.cardStyle}
                     overlayLabelContainerStyle={styles.overlayLabelContainerStyle}
                     renderCard={renderCard}
@@ -87,12 +89,6 @@ const CampusBuzz = () => {
                     onSwipeLeft={(cardIndex) => {
                         console.log('onSwipeLeft', cardIndex);
                     }}
-                    onSwipeTop={(cardIndex) => {
-                        console.log('onSwipeTop', cardIndex);
-                    }}
-                    onSwipeBottom={(cardIndex) => {
-                        console.log('onSwipeBottom', cardIndex);
-                    }}
                     OverlayLabelRight={OverlayLabelRight}
                     OverlayLabelLeft={OverlayLabelLeft}
                     OverlayLabelTop={OverlayLabelTop}
@@ -108,57 +104,6 @@ const CampusBuzz = () => {
                     }}
                 />
             </View>
-
-            {/* <View style={styles.buttonsContainer}>
-                <ActionButton
-                    style={styles.button}
-                    onTap={() => {
-                        ref.current?.flipCard();
-                    }}
-                >
-                    <AntDesign name="sync" size={ICON_SIZE} color="white" />
-                </ActionButton>
-                <ActionButton
-                    style={styles.button}
-                    onTap={() => {
-                        ref.current?.swipeBack();
-                    }}
-                >
-                    <AntDesign name="reload" size={ICON_SIZE} color="white" />
-                </ActionButton>
-                <ActionButton
-                    style={styles.button}
-                    onTap={() => {
-                        ref.current?.swipeLeft();
-                    }}
-                >
-                    <AntDesign name="close" size={ICON_SIZE} color="white" />
-                </ActionButton>
-                <ActionButton
-                    style={styles.button}
-                    onTap={() => {
-                        ref.current?.swipeBottom();
-                    }}
-                >
-                    <AntDesign name="down" size={ICON_SIZE} color="white" />
-                </ActionButton>
-                <ActionButton
-                    style={styles.button}
-                    onTap={() => {
-                        ref.current?.swipeTop();
-                    }}
-                >
-                    <AntDesign name="up" size={ICON_SIZE} color="white" />
-                </ActionButton>
-                <ActionButton
-                    style={styles.button}
-                    onTap={() => {
-                        ref.current?.swipeRight();
-                    }}
-                >
-                    <AntDesign name="heart" size={ICON_SIZE} color="white" />
-                </ActionButton>
-            </View> */}
         </GestureHandlerRootView>
     );
 };
@@ -197,6 +142,11 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
+    renderCardTextContainer: {
+        paddingVertical: 10,
+        paddingHorizontal: 4,
+        gap: 10
+    },
     renderFlippedCardContainer: {
         borderRadius: 15,
         backgroundColor: '#baeee5',
@@ -211,15 +161,16 @@ const styles = StyleSheet.create({
     },
     cardStyle: {
         width: '90%',
-        height: '90%',
+        height: '100%',
         borderRadius: 15,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
     renderCardImage: {
-        height: screenHeight * 0.64,
+        height: screenHeight * 0.66,
         width: '100%',
+        borderRadius:5
     },
     subContainer: {
         flex: 1,

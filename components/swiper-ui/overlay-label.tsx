@@ -11,7 +11,11 @@ export const OverlayLabelRight = (() => {
                     backgroundColor: 'green',
                 },
             ]}
-        />
+        >
+            <ThemedText type='title'>
+                Interested
+            </ThemedText>
+        </View>
     );
 });
 
@@ -26,7 +30,7 @@ export const OverlayLabelLeft = (() => {
             ]}
         >
             <ThemedText type='title'>
-                Hello
+                Skip
             </ThemedText>
         </View>
     );
@@ -38,7 +42,7 @@ export const OverlayLabelTop = (() => {
             style={[
                 styles.overlayLabelContainer,
                 {
-                    backgroundColor: 'blue',
+                    backgroundColor: 'gray',
                 },
             ]}
         />
@@ -50,7 +54,7 @@ export const OverlayLabelBottom = (() => {
             style={[
                 styles.overlayLabelContainer,
                 {
-                    backgroundColor: 'orange',
+                    backgroundColor: 'gray',
                 },
             ]}
         />
@@ -59,7 +63,7 @@ export const OverlayLabelBottom = (() => {
 
 const styles = StyleSheet.create({
     overlayLabelContainer: {
-        borderRadius: 15,
+        borderRadius: 20,
         height: '90%',
         width: '90%',
         flex: 1,
