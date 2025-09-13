@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     overlayLabelContainer: {
         borderRadius: 20,
         height: '90%',
-        width: '90%',
+        width: '95%',
         flex: 1,
         justifyContent: "center",
         alignItems: "center"

@@ -4,7 +4,6 @@ import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import RoundButton from '@/components/ui/round-button';
 import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
-import { BlurView } from 'expo-blur';
 import React, { useCallback, useRef } from 'react';
 import {
     Dimensions,
@@ -141,7 +140,7 @@ const CampusBuzz = () => {
                 <BottomSheetModal
                     snapPoints={["20%", "90%"]}
                     handleIndicatorStyle={{ backgroundColor: colorScheme === 'dark' ? '#ffffffff' : '#000000ff' }}
-                    handleStyle={{
+                    handleStyle={{ 
                         backgroundColor: colorScheme === 'dark' ? '#524e4eff' : '#ffffffff',
                         borderTopEndRadius: 20,
                         borderTopStartRadius: 20
@@ -150,16 +149,6 @@ const CampusBuzz = () => {
                     backgroundStyle={{ backgroundColor: colorScheme === 'dark' ? '#1a1a1aff' : '#ffffffff' }}
                     onChange={handleSheetChanges}
                 >
-                    <BlurView
-                        intensity={50} // Adjust 0–100
-                        tint={colorScheme === 'dark' ? 'dark' : 'light'} // auto theme
-                        style={{
-                            ...StyleSheet.absoluteFillObject, // Fill the modal background
-                            borderTopLeftRadius: 20,
-                            borderTopRightRadius: 20,
-                            overflow: 'hidden',
-                        }}
-                    />
                     <BottomSheetView style={[styles.contentContainer, { backgroundColor: colorScheme === 'dark' ? '#232323ff' : '#ffffffff' }]}>
                         <ScrollView style={{
                             gap: 50
