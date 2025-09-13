@@ -3,19 +3,16 @@ import { OverlayLabelBottom, OverlayLabelLeft, OverlayLabelRight, OverlayLabelTo
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import RoundButton from '@/components/ui/round-button';
-import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
 import React, { useCallback, useRef } from 'react';
 import {
     Dimensions,
     Image,
-    ScrollView,
     StyleSheet,
     Text,
     useColorScheme,
     View,
-    type ImageSourcePropType,
+    type ImageSourcePropType
 } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Button, Snackbar } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Swiper, type SwiperCardRefType } from 'rn-swiper-list';
@@ -33,19 +30,12 @@ const IMAGES: ImageSourcePropType[] = [
 const ICON_SIZE = 24;
 
 
-const CampusBuzz = () => {
+const CampusBuzz = ({ handlePresentModalPress, handlePresentModalClose }: {
+    handlePresentModalPress: () => void;
+    handlePresentModalClose: () => void;
+}) => {
     const ref = useRef<SwiperCardRefType>(null);
     const colorScheme = useColorScheme()
-    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-    // callbacks
-    const handlePresentModalPress = useCallback(() => {
-        bottomSheetModalRef.current?.present();
-    }, []);
-    const handleSheetChanges = useCallback((index: number) => {
-        console.log('handleSheetChanges', index);
-    }, []);
-
     const [visible, setVisible] = React.useState(false);
 
     const onToggleSnackBar = () => setVisible(!visible);
@@ -94,7 +84,7 @@ const CampusBuzz = () => {
     );
 
     return (
-        <GestureHandlerRootView style={styles.container}>
+        <>
             <View style={styles.subContainer}>
                 <Swiper
                     ref={ref}
@@ -109,6 +99,7 @@ const CampusBuzz = () => {
                     }}
                     onSwipeRight={(cardIndex) => {
                         console.log('cardIndex', cardIndex);
+                        handlePresentModalClose()
                     }}
                     onPress={() => {
                         console.log('onPress');
@@ -119,6 +110,7 @@ const CampusBuzz = () => {
                     FlippedContent={renderFlippedCard}
                     onSwipeLeft={(cardIndex) => {
                         console.log('onSwipeLeft', cardIndex);
+                        handlePresentModalClose()
                     }}
                     OverlayLabelRight={OverlayLabelRight}
                     OverlayLabelLeft={OverlayLabelLeft}
@@ -135,41 +127,7 @@ const CampusBuzz = () => {
                     }}
                 />
             </View>
-            <BottomSheetModalProvider >
-                <BottomSheetModal
-                    snapPoints={["20%", "90%"]}
-                    handleIndicatorStyle={{ backgroundColor: colorScheme === 'dark' ? '#ffffffff' : '#000000ff' }}
-                    handleStyle={{
-                        backgroundColor: colorScheme === 'dark' ? '#524e4eff' : '#ffffffff',
-                        borderTopEndRadius: 20,
-                        borderTopStartRadius: 20
-                    }}
-                    ref={bottomSheetModalRef}
-                    backgroundStyle={{ backgroundColor: colorScheme === 'dark' ? '#1a1a1aff' : '#ffffffff' }}
-                    onChange={handleSheetChanges}
-                >
-                    <BottomSheetView style={[styles.contentContainer, { backgroundColor: colorScheme === 'dark' ? '#232323ff' : '#ffffffff' }]}>
-                        <ScrollView style={{
-                            gap: 50
-                        }}>
-                            <ThemedText type='title'>
-                                Event Title
-                            </ThemedText>
-                            <ThemedText type='subtitle'>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, animi?
-                            </ThemedText>
-                            <ThemedText>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae aperiam est expedita maxime, quod dignissimos in quae nemo quia, obcaecati fugit numquam laudantium nesciunt quos sit quaerat accusamus dolores aliquam?
-                            </ThemedText>
-                        </ScrollView>
-                    </BottomSheetView>
-                </BottomSheetModal>
-            </BottomSheetModalProvider>
-            <RoundButton onPress={() => {
-                ref.current?.swipeBack();
-            }}>
-                <IconSymbol size={28} name="rotate.left" color={colorScheme!} />
-            </RoundButton>
+
             {/* <Button mode="contained" onPress={onToggleSnackBar}>
                 Show Snackbar
             </Button> */}
@@ -186,7 +144,12 @@ const CampusBuzz = () => {
             >
                 Open the dock to see more details
             </Snackbar>
-        </GestureHandlerRootView>
+            <RoundButton onPress={() => {
+                ref.current?.swipeBack();
+            }}>
+                <IconSymbol size={28} name="rotate.left" color={colorScheme!} />
+            </RoundButton>
+        </>
 
     );
 };

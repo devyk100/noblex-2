@@ -9,7 +9,10 @@ const DATA = Array.from({ length: 10 }, (_, i) => ({
   imageUrl: `https://picsum.photos/seed/${i}/40/40`, // Example URL
 }));
 
-export default function MyListView() {
+export default function ListView({handlePresentModalPress, handlePresentModalClose}: {
+  handlePresentModalPress: () => void;
+  handlePresentModalClose: () => void;
+}) {
   const renderItem = ({ item }: { item: typeof DATA[0] }) => (
     <Card style={styles.card} elevation={2}>
       <List.Item
@@ -32,7 +35,10 @@ export default function MyListView() {
             <IconButton
               icon="information-outline"
               size={24}
-              onPress={() => console.log('Details', item.id)}
+              onPress={() => {
+                console.log('Details', item.id)
+                handlePresentModalPress()
+              }}
             />
           </View>
         )}
