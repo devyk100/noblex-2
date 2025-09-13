@@ -1,6 +1,7 @@
+import PopupDialog from '@/components/ui/popup-dialog';
 import React from 'react';
 import { FlatList, Image, StyleSheet, View } from 'react-native';
-import { Card, IconButton, List } from 'react-native-paper';
+import { Card, IconButton, List, Switch, Text } from 'react-native-paper';
 
 const DATA = Array.from({ length: 10 }, (_, i) => ({
   id: i.toString(),
@@ -9,7 +10,7 @@ const DATA = Array.from({ length: 10 }, (_, i) => ({
   imageUrl: `https://picsum.photos/seed/${i}/40/40`, // Example URL
 }));
 
-export default function ListView({handlePresentModalPress, handlePresentModalClose}: {
+export default function ListView({ handlePresentModalPress, handlePresentModalClose }: {
   handlePresentModalPress: () => void;
   handlePresentModalClose: () => void;
 }) {
@@ -27,10 +28,31 @@ export default function ListView({handlePresentModalPress, handlePresentModalClo
         )}
         right={() => (
           <View style={styles.rightButtons}>
-            <IconButton
-              icon="bell-outline"
-              size={24}
-              onPress={() => console.log('Notify', item.id)}
+            <PopupDialog Trigger={
+              ({onClick}: {onClick: () => void}) => <IconButton
+                icon="bell-outline"
+                size={24}
+                onPress={() => {
+                  console.log('Notify', item.id)
+                  onClick()
+                }}
+              />
+            }
+              title='Edit Notifications for Event'
+              DialogContent={() => <>
+                <View style={styles.row}>
+                  <Text>Notify 10 minutes before</Text>
+                  <Switch />
+                </View>
+                <View style={styles.row}>
+                  <Text>Notify 1 hr before</Text>
+                  <Switch  />
+                </View>
+                <View style={styles.row}>
+                  <Text>Notify 2 hr before</Text>
+                  <Switch  />
+                </View>
+              </>}
             />
             <IconButton
               icon="information-outline"
@@ -77,4 +99,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 8,
+  },
+
 });

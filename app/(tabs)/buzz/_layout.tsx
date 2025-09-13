@@ -103,7 +103,7 @@ export default function MyRouteScreen() {
         </View>
         <BottomSheetModalProvider >
           <BottomSheetModal
-            snapPoints={["20%", "90%"]}
+            snapPoints={["34%", "90%"]}
             handleIndicatorStyle={{ backgroundColor: colorScheme === 'dark' ? '#ffffffff' : '#000000ff' }}
             handleStyle={{
               backgroundColor: colorScheme === 'dark' ? '#524e4eff' : '#ffffffff',

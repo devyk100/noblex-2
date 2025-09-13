@@ -61,7 +61,7 @@ const CampusBuzz = ({ handlePresentModalPress, handlePresentModalClose }: {
                             mode="contained-tonal" // "text" | "outlined" | "contained"
                             onPress={() => {
                                 handlePresentModalPress()
-                                onToggleSnackBar()
+                                // onToggleSnackBar()
                             }}
                             style={{
                                 paddingHorizontal: 10
