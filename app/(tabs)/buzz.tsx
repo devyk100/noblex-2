@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import { OverlayLabelBottom, OverlayLabelLeft, OverlayLabelRight, OverlayLabelTop } from '@/components/swiper-ui/overlay-label';
 import { ThemedText } from '@/components/themed-text';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import React, { useCallback, useRef } from 'react';
 import {
     Dimensions,
@@ -15,7 +16,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Swiper, type SwiperCardRefType } from 'rn-swiper-list';
 
-
 const screenHeight = Dimensions.get('window').height;
 
 const IMAGES: ImageSourcePropType[] = [
@@ -29,26 +29,34 @@ const IMAGES: ImageSourcePropType[] = [
 
 const ICON_SIZE = 24;
 
+
 const CampusBuzz = () => {
     const ref = useRef<SwiperCardRefType>(null);
     const colorScheme = useColorScheme()
+    const bottomSheetRef = useRef<BottomSheet>(null);
+    const handleSheetChanges = useCallback((index: number) => {
+        console.log('handleSheetChanges', index);
+    }, []);
     const renderCard = useCallback((image: ImageSourcePropType, index: number) => {
         return (
-            <SafeAreaView style={[styles.renderCardContainer, { backgroundColor: colorScheme === 'dark' ? '#000000ff' : '#ffffffff' }]}>
-                <Image
-                    source={image}
-                    style={styles.renderCardImage}
-                    resizeMode="cover"
-                />
-                <View style={styles.renderCardTextContainer}>
-                    <ThemedText type='title'>
-                        Event Title
-                    </ThemedText>
-                    <ThemedText type='default'>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste voluptate, debitis excepturi eos officiis odit cumque quibusdam labore doloremque ad!
-                    </ThemedText>
-                </View>
-            </SafeAreaView>
+            <>
+
+                <SafeAreaView style={[styles.renderCardContainer, { backgroundColor: colorScheme === 'dark' ? '#000000ff' : '#ffffffff' }]}>
+                    <Image
+                        source={image}
+                        style={styles.renderCardImage}
+                        resizeMode="cover"
+                    />
+                    <View style={styles.renderCardTextContainer}>
+                        <ThemedText type='title'>
+                            Event Title
+                        </ThemedText>
+                        <ThemedText type='default'>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste voluptate, debitis excepturi eos officiis odit cumque quibusdam labore doloremque ad!
+                        </ThemedText>
+                    </View>
+                </SafeAreaView>
+            </>
         );
     }, []);
     const renderFlippedCard = useCallback(
@@ -104,17 +112,35 @@ const CampusBuzz = () => {
                     }}
                 />
             </View>
+            <BottomSheet
+                ref={bottomSheetRef}
+                onChange={handleSheetChanges}
+            >
+                <BottomSheetView style={styles.contentContainer}>
+                    <Text>Awesome 🎉</Text>
+                </BottomSheetView>
+            </BottomSheet>
         </GestureHandlerRootView>
+
     );
 };
 
 export default CampusBuzz;
 
 const styles = StyleSheet.create({
+    dockViewContent: {
+        flex: 1,
+        backgroundColor: '#eee',
+    },
     container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    contentContainer: {
+        flex: 1,
+        padding: 36,
+        alignItems: 'center',
     },
     buttonsContainer: {
         flexDirection: 'row',
@@ -170,7 +196,7 @@ const styles = StyleSheet.create({
     renderCardImage: {
         height: screenHeight * 0.66,
         width: '100%',
-        borderRadius:5
+        borderRadius: 5
     },
     subContainer: {
         flex: 1,
